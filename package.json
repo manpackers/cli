@@ -1,0 +1,44 @@
+{
+  "name": "@manpacker/cli",
+  "version": "0.0.0",
+  "description": "Manpacker generator bulid cli tools",
+  "bin": {
+    "manpacker-create": "./bin/manpacker",
+    "generator-init": "./bin/manpacker-init",
+    "generator-repo": "./bin/manpacker-repo"
+  },
+  "scripts": {
+    "test": "manpacker stage",
+    "prod": "manpacker prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manpackers/cli.git"
+  },
+  "author": {
+    "name": "winterfete"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-manpacker": "^1.5.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.20.0",
+    "handlebars": "^4.1.2",
+    "inquirer": "^6.3.1",
+    "ora": "^3.4.0",
+    "request": "^2.88.0",
+    "rimraf": "^2.6.3"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "manpacker"
+    ]
+  }
+}
