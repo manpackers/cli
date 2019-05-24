@@ -9,14 +9,16 @@ const install = (url, dirName) => spawn.sync('npm', [
   'i', '--prefix', path.resolve(dirName), '-f'
 ], { stdio: 'inherit' })
 
-const version = async(url) => await new Promise((resolve, reject) => request(
+const version = async(url) => await new Promise(resolve => request(
   { url, timeout: 10000 }, (err, resp, body) => {
-    if (err) { return reject(err) }
+    if (err) {
+      return resolve('^*')
+    }
 
     if (resp && resp.statusCode === 200) {
-      return resolve(JSON.parse(body).collected.metadata.version)
+      return resolve(`^${JSON.parse(body).collected.metadata.version}`)
     }
-    return reject(err)
+    return resolve('^*')
   }
 ))
 

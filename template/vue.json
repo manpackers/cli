@@ -1,0 +1,45 @@
+{
+  "name": "{{name}}",
+  "version": "{{version}}",
+  "description": "{{name}} is {{version}}",
+  "scripts": {
+    "server": "manpacker-vue server",
+    "build": "manpacker-vue build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://XXX"
+  },
+  "author": {
+    "name": "{{author}}"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@manpacker/gennerator-vue": "",
+    "babel-preset-manpacker": "",
+    "eslint": "^5.16.0",
+    "eslint-config-manpacker-vue": "^1.5.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.20.0",
+    "cross-spawn": "^6.0.5",
+    "handlebars": "^4.1.2",
+    "inquirer": "^6.3.1",
+    "ora": "^3.4.0",
+    "request": "^2.88.0",
+    "rimraf": "^2.6.3"
+  },
+  "babel": {
+    "presets": ["manpacker"]
+  },
+  "eslintConfig": {
+    "extends": [
+      "manpacker-vue"
+    ]
+  },
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
+  }
+}
