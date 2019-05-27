@@ -6,8 +6,7 @@ const rimraf = require('rimraf')
 const path = require('path')
 
 const packer = require('../util/packer')
-const npms = 'https://api.npms.io/v2/package'
-const org = 'https://github.com/manpackers-template'
+const { npms, org } = require('../util/uri')
 
 module.exports = async({ name, version, author }) => {
   let { isNode } = await inquirer.prompt([{
@@ -24,25 +23,7 @@ module.exports = async({ name, version, author }) => {
       'build': 'manpacker-vue build'
     },
 
-    'devDependencies': isNode ? {
-      '@manpacker/noden': await packer.version(
-        `${npms}/${encodeURIComponent('@manpacker/noden')}`
-      ),
-      '@manpacker/generator-vue': await packer.version(
-        `${npms}/${encodeURIComponent('@manpacker/generator-vue')}`
-      ),
-      'babel-preset-manpacker': await packer.version(
-        `${npms}/babel-preset-manpacker`
-      ),
-      'eslint': '^5.16.0',
-      'eslint-config-manpacker-vue': await packer.version(
-        `${npms}/eslint-config-manpacker-vue`
-      ),
-      'eslint-config-manpacker-typescript': await packer.version(
-        `${npms}/eslint-config-manpacker-typescript`
-      ),
-      'nodemon': '^1.19.0'
-    } : {
+    'devDependencies': {
       '@manpacker/generator-vue': await packer.version(
         `${npms}/${encodeURIComponent('@manpacker/generator-vue')}`
       ),
@@ -63,15 +44,7 @@ module.exports = async({ name, version, author }) => {
       'vue-router': await packer.version(`${npms}/vue-router`),
       'vuex': await packer.version(`${npms}/vuex`)
     }
-  }, isNode ? {
-    'scripts': {
-      'noden:server': 'manpacker-noden server&&nodemon --watch ./bin/www ./bin/www 9090',
-      'noden:build': 'manpacker-noden build',
-      'rese:build': 'npm run build&&npm run noden:build'
-    },
-
-    'eslintConfig': { 'extends': ['manpacker-typescript'] }
-  } : {})), null, '  '))({ name, version, author })
+  }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
 
   packer.clone(`${org}/vue.git`, name)
   isNode && rimraf.sync(path.resolve(`${name}/app`))

@@ -6,8 +6,7 @@ const path = require('path')
 const inquirer = require('inquirer')
 
 const packer = require('../util/packer')
-const npms = 'https://api.npms.io/v2/package'
-const org = 'https://github.com/manpackers-template'
+const { npms, org } = require('../util/uri')
 
 module.exports = async({ name, version, author }) => {
   let { isNode } = await inquirer.prompt([{
@@ -23,24 +22,7 @@ module.exports = async({ name, version, author }) => {
       'build': 'manpacker build'
     },
 
-    'devDependencies': isNode ? {
-      '@manpacker/noden': await packer.version(
-        `${npms}/${encodeURIComponent('@manpacker/noden')}`
-      ),
-      '@manpacker/generator': await packer.version(
-        `${npms}/${encodeURIComponent('@manpacker/generator')}`
-      ),
-      'babel-preset-manpacker': await packer.version(
-        `${npms}/babel-preset-manpacker`
-      ),
-      'eslint': '^5.16.0',
-      'eslint-config-manpacker': await packer.version(
-        `${npms}/eslint-config-manpacker`
-      ),
-      'eslint-config-manpacker-typescript': await packer.version(
-        `${npms}/eslint-config-manpacker-typescript`
-      )
-    } : {
+    'devDependencies': {
       '@manpacker/generator': await packer.version(
         `${npms}/${encodeURIComponent('@manpacker/generator')}`
       ),
@@ -61,15 +43,7 @@ module.exports = async({ name, version, author }) => {
       jquery: await packer.version(`${npms}/jquery`),
       handlebars: await packer.version(`${npms}/handlebars`)
     }
-  }, isNode ? {
-    'scripts': {
-      'noden:server': 'manpacker-noden server&&nodemon --watch ./bin/www ./bin/www 9090',
-      'noden:build': 'manpacker-noden build',
-      'rese:build': 'npm run build&&npm run noden:build'
-    },
-
-    'eslintConfig': { 'extends': ['manpacker-typescript'] }
-  } : {})), null, '  '))({ name, version, author })
+  }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
 
   packer.clone(`${org}/jquery-handlebars.git`, name)
   isNode && rimraf.sync(path.resolve(`${name}/app`))
