@@ -1,30 +1,25 @@
+# Explain
+Generate templates that generate project templates such as <code>vue</code> <code>react</code> <code>jquery-handlebars</code><br/>
 
-```js
+Vue can choose framework technology stack such as router vuex.<br />
+React can choose framework technology stack such as router redux.<br />
+Basis template for jquery and handlebars.
 
-   This tool develops command-line tools for the manpacker front-end
-
-```
-### Installation
-
-```js
-
- $ npm install @manpacker/cli -g
+# Install
 
 ```
-
-### Command
-
-```js
- 
-   manpacker init <project-name>
-
-    Create projects through a template
-
-   manpacker repo <repo-url>
-
-    Url format: git:xxxx/{{template}}
-
-   manpacker -V
-    Package version number.
-
+npm install @manpacker/cli -g
 ```
+
+# Usage
+
+Create initialize a project.
+```
+manpacker create <project-name>
+```
+
+### Example
+```
+manpacker create my-app
+```
+Create initialize <code>my-app</code> project.
