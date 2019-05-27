@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "description": "Manpacker generator bulid cli tools",
   "bin": {
-    "manpacker-create": "./bin/manpacker",
-    "generator-init": "./bin/manpacker-init",
-    "generator-repo": "./bin/manpacker-repo"
+    "manpacker": "./bin/manpacker"
   },
   "scripts": {
     "test": "manpacker stage",
@@ -27,6 +25,7 @@
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
     "cross-spawn": "^6.0.5",
+    "deepmerge": "^3.2.0",
     "handlebars": "^4.1.2",
     "inquirer": "^6.3.1",
     "ora": "^3.4.0",

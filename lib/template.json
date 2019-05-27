@@ -1,0 +1,20 @@
+{
+  "name": "{{name}}",
+  "version": "{{version}}",
+  "description": "{{name}} is {{version}}",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "{{author}}"
+  },
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
+  }
+}

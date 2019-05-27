@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
 'use strict'
-const program = require('commander')
+const { version } = require('../package.json')
+const Commander = require('../lib/commander')
+const commander = new Commander({ version })
 
-program.version(require('../package').version)
-  .usage('<command> [options]')
-
-program.command('init', 'Generate a new project from a template')
-program.command('repo', 'Setting up template warehouse URL.')
-program.parse(process.argv)
+commander.create()
+commander.parse()
