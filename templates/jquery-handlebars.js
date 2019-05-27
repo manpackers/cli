@@ -47,7 +47,8 @@ module.exports = async({ name, version, author }) => {
   }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
 
   packer.clone(`${org}/jquery-handlebars.git`, name)
-  isNode && rimraf.sync(path.resolve(`${name}/app`))
+  isNode && rimraf.sync(path.resolve(`${name}/app`)) &&
+  rimraf.sync(path.resolve(`${name}/tsconfig.json`))
   packer.write(`${name}/package.json`, packageJSON)
   spinner.stop()
   packer.install(name)
