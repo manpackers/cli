@@ -6,8 +6,7 @@
     "manpacker": "./bin/manpacker"
   },
   "scripts": {
-    "test": "manpacker stage",
-    "prod": "manpacker prod"
+    "test": "node ./bin/manpacker"
   },
   "repository": {
     "type": "git",
