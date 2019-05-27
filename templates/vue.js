@@ -17,39 +17,45 @@ module.exports = async({ name, version, author }) => {
   }])
 
   let spinner = ora(`Initializing the ${name} project\n`).start()
-  let packageJSON = Handlebars.compile(JSON.stringify(deepmerge(require('./template.json'), deepmerge({
-    'scripts': {
-      'server': 'manpacker-vue server --ic ./config/localserver.ic.js',
-      'dev': 'manpacker-vue build ./config/development.ic.js',
-      'build': 'manpacker-vue build ./config/production.ic.js'
-    },
+  let packageJSON = Handlebars.compile(JSON.stringify(
+    deepmerge(require('./template.json'), deepmerge({
+      'scripts': {
+        'start': 'npm run server',
+        'server': 'manpacker-vue server --ic ./config/localserver.ic.js',
+        'dev': 'manpacker-vue build ./config/development.ic.js',
+        'build': 'manpacker-vue build ./config/production.ic.js'
+      },
 
-    'devDependencies': {
-      '@manpacker/generator-vue': await packer.version(
-        `${npms}/${encodeURIComponent('@manpacker/generator-vue')}`
-      ),
-      'babel-preset-manpacker': await packer.version(
-        `${npms}/babel-preset-manpacker`
-      ),
-      'eslint': '^5.16.0',
-      'eslint-config-manpacker-vue': await packer.version(
-        `${npms}/eslint-config-manpacker-vue`
-      )
-    },
+      'devDependencies': {
+        '@manpacker/generator-vue': await packer.version(
+          `${npms}/${encodeURIComponent('@manpacker/generator-vue')}`
+        ),
+        'babel-preset-manpacker': await packer.version(
+          `${npms}/babel-preset-manpacker`
+        ),
+        'eslint': '^5.16.0',
+        'eslint-config-manpacker-vue': await packer.version(
+          `${npms}/eslint-config-manpacker-vue`
+        )
+      },
 
-    'babel': { 'presets': ['manpacker'] },
+      'babel': { 'presets': ['manpacker'] },
 
-    'eslintConfig': { 'extends': ['manpacker-vue'] },
+      'eslintConfig': {
+        'extends': (isNode ? ['manpacker-typescript'] : []).concat(['manpacker-vue'])
+      },
 
-    dependencies: {
-      'vue-router': await packer.version(`${npms}/vue-router`),
-      'vuex': await packer.version(`${npms}/vuex`)
-    }
-  }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
+      dependencies: {
+        'vue-router': await packer.version(`${npms}/vue-router`),
+        'vuex': await packer.version(`${npms}/vuex`)
+      }
+    }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
 
   packer.clone(`${org}/vue.git`, name)
-  isNode && rimraf.sync(path.resolve(`${name}/app`)) &&
-  rimraf.sync(path.resolve(`${name}/tsconfig.json`))
+  if (!isNode) {
+    rimraf.sync(path.resolve(`${name}/app`))
+    rimraf.sync(path.resolve(`${name}/tsconfig.json`))
+  }
   packer.write(`${name}/package.json`, packageJSON)
   spinner.stop()
   packer.install(name)

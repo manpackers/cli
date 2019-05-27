@@ -15,8 +15,6 @@ module.exports = async() => ({
   'scripts': {
     'noden:server': 'manpacker-noden server&&nodemon --watch ./bin/www ./bin/www 9090',
     'noden:build': 'manpacker-noden build',
-    'rese:build': 'npm run build&&npm run noden:build'
-  },
-
-  'eslintConfig': { 'extends': ['manpacker-typescript'] }
+    'reses:build': 'npm run build&&npm run noden:build'
+  }
 })

@@ -17,40 +17,46 @@ module.exports = async({ name, version, author }) => {
   }])
 
   let spinner = ora(`Initializing the ${name} project\n`).start()
-  let packageJSON = Handlebars.compile(JSON.stringify(deepmerge(require('./template.json'), deepmerge({
-    'scripts': {
-      'server': 'manpacker-react server --ic ./config/localserver.ic.js',
-      'dev': 'manpacker-react build ./config/development.ic.js',
-      'build': 'manpacker-react build ./config/production.ic.js'
-    },
+  let packageJSON = Handlebars.compile(JSON.stringify(
+    deepmerge(require('./template.json'), deepmerge({
+      'scripts': {
+        'start': 'npm run server',
+        'server': 'manpacker-react server --ic ./config/localserver.ic.js',
+        'dev': 'manpacker-react build ./config/development.ic.js',
+        'build': 'manpacker-react build ./config/production.ic.js'
+      },
 
-    'devDependencies': {
-      '@manpacker/generator-react': await packer.version(
-        `${npms}/${encodeURIComponent('@manpacker/generator-react')}`
-      ),
-      'babel-preset-manpacker-react': await packer.version(
-        `${npms}/babel-preset-manpacker-react`
-      ),
-      'eslint': '^5.16.0',
-      'eslint-config-manpacker-react': await packer.version(
-        `${npms}/eslint-config-manpacker-react`
-      )
-    },
+      'devDependencies': {
+        '@manpacker/generator-react': await packer.version(
+          `${npms}/${encodeURIComponent('@manpacker/generator-react')}`
+        ),
+        'babel-preset-manpacker-react': await packer.version(
+          `${npms}/babel-preset-manpacker-react`
+        ),
+        'eslint': '^5.16.0',
+        'eslint-config-manpacker-react': await packer.version(
+          `${npms}/eslint-config-manpacker-react`
+        )
+      },
 
-    'babel': { 'presets': ['manpacker-react'] },
+      'babel': { 'presets': ['manpacker-react'] },
 
-    'eslintConfig': { 'extends': ['manpacker-react'] },
+      'eslintConfig': {
+        'extends': (isNode ? ['manpacker-typescript'] : []).concat(['manpacker-react'])
+      },
 
-    dependencies: {
-      'react-router': await packer.version(`${npms}/react-router`),
-      'redux': await packer.version(`${npms}/redux`),
-      'react-redux': await packer.version(`${npms}/react-redux`)
-    }
-  }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
+      dependencies: {
+        'react-router': await packer.version(`${npms}/react-router`),
+        'redux': await packer.version(`${npms}/redux`),
+        'react-redux': await packer.version(`${npms}/react-redux`)
+      }
+    }, isNode ? await require('./noden')() : {})), null, '  '))({ name, version, author })
 
   packer.clone(`${org}/react.git`, name)
-  isNode && rimraf.sync(path.resolve(`${name}/app`)) &&
-  rimraf.sync(path.resolve(`${name}/tsconfig.json`))
+  if (!isNode) {
+    rimraf.sync(path.resolve(`${name}/app`))
+    rimraf.sync(path.resolve(`${name}/tsconfig.json`))
+  }
   packer.write(`${name}/package.json`, packageJSON)
   spinner.stop()
   packer.install(name)
