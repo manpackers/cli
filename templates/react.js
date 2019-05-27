@@ -19,8 +19,9 @@ module.exports = async({ name, version, author }) => {
   let spinner = ora(`Initializing the ${name} project\n`).start()
   let packageJSON = Handlebars.compile(JSON.stringify(deepmerge(require('./template.json'), deepmerge({
     'scripts': {
-      'server': 'manpacker-react server',
-      'build': 'manpacker-react build'
+      'server': 'manpacker-react server --ic ./config/localserver.ic.js',
+      'dev': 'manpacker-react build ./config/development.ic.js',
+      'build': 'manpacker-react build ./config/production.ic.js'
     },
 
     'devDependencies': {

@@ -1,1 +1,1 @@
-//Test function.
+// Test function.
